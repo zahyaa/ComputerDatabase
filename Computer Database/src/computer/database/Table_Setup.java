@@ -11,7 +11,7 @@ public class Table_Setup {
    public Table_Setup(){
         try{
             Class.forName("com.mysql.jdbc.Driver");
-            conn = DriverManager.getConnection("jdbc:mysql://localhost:3306/sakila","root","1995");
+            conn = DriverManager.getConnection("jdbc:mysql://localhost:3306/sakila","root","");
             state = conn.createStatement();
         }catch(Exception ex){
             System.out.println("Error: " + ex);
@@ -34,6 +34,9 @@ public class Table_Setup {
        }catch(Exception ex){
            System.out.println("Error1: " + ex);
        }
+   }
+   public void inputData(String input){
+       
    }
     
 }
