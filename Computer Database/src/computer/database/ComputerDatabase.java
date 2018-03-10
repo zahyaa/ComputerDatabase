@@ -60,23 +60,21 @@ public class ComputerDatabase{
     private Label la,lb,lc,ld,le,lf,lg;
     Choice c2,c3;
     
-    JTable table = new JTable();
+    JTable table = new JTable(); // creates a table
     
-    DefaultTableModel model = new DefaultTableModel();
+    DefaultTableModel model = new DefaultTableModel(); // create a model to add item rows x colms
     
     //menu creation
     //Since only one frame it now distrubutes to the whole panel.
     private MenuBar mbar;
     private Menu menu;
-    private MenuItem i1,i2,i4,i5,i6; //Item for each control
+    private MenuItem i1,i2,i4,i5,i7; //Item for each control
     
  
   
     
     public static void main(String[] args) {
     ComputerDatabase cd = new ComputerDatabase();
-    Table_Setup tb = new Table_Setup();
-    tb.getData();
     cd.setup();
     cd.display();
     cd.control();
@@ -88,7 +86,7 @@ public class ComputerDatabase{
     public ComputerDatabase(){
         //initailize variables,methods,data
      }
-    @SuppressWarnings("empty-statement")
+    
     public final void setup(){
         frame = new Frame("Computer Datebase");
         frame.setSize(500,500);
@@ -280,8 +278,8 @@ public class ComputerDatabase{
         i1 = new MenuItem("Go to Main");
         i2 = new MenuItem("View Table");
         i4 = new MenuItem("Exit");
-        i5 = new MenuItem("Save");
-        i6 = new MenuItem("Export-SQL");
+        i5 = new MenuItem("Export-File");
+        i7 = new MenuItem("Import File");
         
         menu.add(i1);
         
@@ -306,7 +304,7 @@ public class ComputerDatabase{
             frame.revalidate();
         });
         menu.add(i5);
-        menu.add(i6);
+        menu.add(i7);
         menu.addSeparator(); // seperates Exit from the groups
         menu.add(i4);
         i4.addActionListener((ActionEvent e) -> {
@@ -381,6 +379,7 @@ public class ComputerDatabase{
               ex.printStackTrace();
           }
        });
+      //This method highlights a row and changes the information
        update.addActionListener((ActionEvent e) -> {
            int s = table.getSelectedRow();
           try{
@@ -399,8 +398,68 @@ public class ComputerDatabase{
        });
             
        i5.addActionListener((ActionEvent e) -> {
+       try{
+           //change your windows user name
+           String filePath = "C:\\Users\\masterbird\\Desktop\\data.txt"; //file path change it to your computer
+           File file = new File(filePath);
+        try {
+            FileWriter fw = new FileWriter(file);
+            BufferedWriter bw = new BufferedWriter(fw);
+            
+            for(int i = 0; i < model.getRowCount(); i++){//rows
+                for(int j = 0; j < model.getColumnCount(); j++){//columns
+                    bw.write(model.getValueAt(i, j).toString()+" ");
+                }
+                bw.newLine();
+            }
+            
+            bw.close();
+            fw.close();
+            
+        } catch (IOException ex) {
+            System.out.println(ex.getMessage());
+        }
          
+           
+       }catch(Exception ex){
+           System.out.println("Error can't write" + ex.getMessage());
+           
+       }
+        
          });
+       
+       
+       
+       
+      i7.addActionListener((ActionEvent e) -> {
+       try{
+           String filePath = "C:\\Users\\masterbird\\Desktop\\data.txt";
+           File file = new File(filePath);
+          try {
+            FileReader fr = new FileReader(file);
+            BufferedReader br = new BufferedReader(fr);
+            
+            
+            Object[] lines = br.lines().toArray();
+            
+            for(int i = 0; i < lines.length; i++){
+                String[] row1 = lines[i].toString().split(" ");
+            
+                model.addRow(row1);
+            }
+        } catch (IOException ex) {
+            System.out.println(ex.getMessage());
+        }
+         
+           
+       }catch(Exception ex){
+           System.out.println("Error can't write" + ex.getMessage());
+           
+       }
+        
+         });
+        
+        
          
             
             
